@@ -1,3 +1,6 @@
-Lógica detrás del puzzle15:
+Logic behind puzzle15:
 https://www.youtube.com/watch?v=YI1WqYKHi78&ab_channel=Numberphile
 https://mathworld.wolfram.com/15Puzzle.html
+
+Multiline examples for interface:
+https://jameshfisher.com/2016/11/30/c-multiline-literal/

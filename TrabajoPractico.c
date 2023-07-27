@@ -87,22 +87,33 @@ int main() {
     int gameGrid[SIZE] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
     int gameWin[SIZE] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
     
-    printf("Array original:\n");
+    printf("Array randomizado:\n");
     for(int i = 0; i < SIZE; i++) {
-        printf("| %d ", gameGrid[i]);
+        if (gameGrid[i] == 16) {
+            printf("|    ");
+        } else {
+            printf("| %2d ", gameGrid[i]);
+        }
         if((i+1) % 4 == 0) {
+            printf("|");
             printf("\n");
+            printf(" -------------------\n");
         }
     }
-    printf("\n");
     
     randomizeGrid(gameGrid, SIZE);
     
-    printf("Array randomizado:\n");
+    printf("\n\nArray randomizado:\n");
     for(int i = 0; i < SIZE; i++) {
-        printf("| %d ", gameGrid[i]);
+        if (gameGrid[i] == 16) {
+            printf("|    ");
+        } else {
+            printf("| %2d ", gameGrid[i]);
+        }
         if((i+1) % 4 == 0) {
+            printf("|");
             printf("\n");
+            printf(" -------------------\n");
         }
     }
     
