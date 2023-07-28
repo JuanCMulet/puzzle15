@@ -58,11 +58,35 @@ int viableGrid(int grid[], int size) {
     */
     if ( (totalInversions+row)%2 == 0 ) {
         printf("\n El juego es posible de resolver");
+        return 1;
     } else {
         printf("\n El juego NO es posible de resolver");
+        return 0;
     }
     
-    return totalInversions;
+}
+
+void showGrid(int grid[], int size) {
+    printf("\n\n\n");
+    for(int i = 0; i < size; i++) {
+        if (grid[i] == 16) {
+            printf("|    ");
+        } else {
+            printf("| %2d ", grid[i]);
+        }
+        if((i+1) % 4 == 0) {
+            printf("|");
+            printf("\n");
+            printf(" -------------------\n");
+        }
+    }
+    printf("\nW - UP | A - LEFT | S - DOWN | D - RIGHT\n\n");
+}
+
+void swapSpace(int* grid, int size, int i, int j) {
+    int temp = grid[i];
+    grid[i] = grid[j];
+    grid[j] = temp;
 }
 
 void randomizeGrid(int* grid, int size) {
@@ -76,48 +100,112 @@ void randomizeGrid(int* grid, int size) {
         int j = rand() % (i + 1);
         
         //We perform a simple swap using a temp variable
-        int temp = grid[i];
-        grid[i] = grid[j];
-        grid[j] = temp;
+        swapSpace(grid, size, i, j);
     }
     
 }
 
+void moveSpace(int* grid, int size) {
+    char option;
+    int check;
+    int loc;
+    int temp;
+    
+    for (int i = 0; i < size ; i++) {
+        if (grid[i] == 16) {
+            loc = i;
+        }
+    }
+    
+    do {
+        printf("Move to: ");
+        scanf(" %c", &option);
+        
+        switch (option) {
+            case 'W':
+            case 'w':
+                if (loc == 0 || loc == 1 || loc == 2 || loc == 3) {
+                    printf("\nInvalid move\n");
+                    check = 0;
+                } else {
+                    swapSpace(grid, size, loc, loc-4);
+                    check = 1;
+                }
+                break;
+                
+            case 'A':
+            case 'a':
+                if (loc == 0 || loc == 4 || loc == 8 || loc == 12) {
+                    printf("\nInvalid move\n");
+                    check = 0;
+                } else {
+                    swapSpace(grid, size, loc, loc-1);
+                    check = 1;
+                }
+                break;
+                
+            case 'S':
+            case 's':
+                if (loc == 12 || loc == 13 || loc == 14 || loc == 15) {
+                    printf("\nInvalid move\n");
+                    check = 0;
+                } else {
+                    swapSpace(grid, size, loc, loc+4);
+                    check = 1;
+                }
+                break;
+            
+            case 'D':
+            case 'd':
+                if (loc == 3 || loc == 7 || loc == 11 || loc == 15) {
+                    printf("\nInvalid move\n");
+                    check = 0;
+                } else {
+                    swapSpace(grid, size, loc, loc+1);
+                    check = 1;
+                }
+                break;
+            
+            default:
+                printf("\nInvalid input\n");
+                check = 0;
+                break;
+        }
+    } while (check < 1);
+    
+    
+    
+}
+
+int checkWin(const int grid[], const int gridWin[], int size) {
+    for (int i = 0; i < size; i++) {
+        if (grid[i] != gridWin[i]) {
+            return 0; // Arrays are not equal
+        }
+    }
+    return 1; // Arrays are equal
+}
+
+void createGame(int* grid, int* winGrid, int size) {
+    do {
+        randomizeGrid(grid, size);
+    } while (viableGrid(grid,size) != 1);
+    showGrid(grid, size);
+    
+    do {
+        moveSpace(grid, size);
+        showGrid(grid, size);
+    } while (checkWin(grid, winGrid, size) < 1);
+    
+    printf("You won!");
+    
+}
+
 int main() {
-    int gameGrid[SIZE] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+    int gameGrid[SIZE] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 15};
     int gameWin[SIZE] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
     
-    printf("Array randomizado:\n");
-    for(int i = 0; i < SIZE; i++) {
-        if (gameGrid[i] == 16) {
-            printf("|    ");
-        } else {
-            printf("| %2d ", gameGrid[i]);
-        }
-        if((i+1) % 4 == 0) {
-            printf("|");
-            printf("\n");
-            printf(" -------------------\n");
-        }
-    }
-    
-    randomizeGrid(gameGrid, SIZE);
-    
-    printf("\n\nArray randomizado:\n");
-    for(int i = 0; i < SIZE; i++) {
-        if (gameGrid[i] == 16) {
-            printf("|    ");
-        } else {
-            printf("| %2d ", gameGrid[i]);
-        }
-        if((i+1) % 4 == 0) {
-            printf("|");
-            printf("\n");
-            printf(" -------------------\n");
-        }
-    }
-    
-    viableGrid(gameGrid, SIZE);
+    createGame(gameGrid, gameWin, SIZE);
     
 
     return 0;

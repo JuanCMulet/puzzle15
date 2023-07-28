@@ -4,22 +4,21 @@
     #include <curses.h>
 #elif defined(__WIN32__) || defined(__WIN64__) // Windows-specific header file
     #include <windows.h> 
-    #include <conio.h>
 #endif
 #define SIZE 16
 
-/*void clearConsole() {
+
+void clearConsole() {
     #ifdef __unix__
         initscr();
         clear();
         refresh();
         endwin();
     #elif defined(__WIN32__) || defined(__WIN64__)
-        clrscr();
+        system("cls");
     #endif
-    
-    return;
-}*/
+
+}
 
 void mainMenu() {
     int option;
@@ -41,32 +40,30 @@ Press a number (0-3) to move through the menu:\n\
     } while (option > 3 || option < 0);
 
     if (option == 1) {
-        //clearConsole();
+        clearConsole();
         playMenu();
     } else if (option == 2) {
-        //clearConsole();
+        clearConsole();
         scoreMenu();
     } else if (option == 3) {
-        //clearConsole();
+        clearConsole();
         variantMenu();
     } else {
-        //clearConsole();
-        printf("\n¡Hope you had fun!\n");
+        clearConsole();
+        printf("\nHope you had fun!\n");
         #ifdef __unix__
              sleep(1.7);
         #elif defined(__WIN32__) || defined(__WIN64__)
             Sleep(1700);
         #endif
-        printf("\n¡Good Bye!\n");
+        printf("\nGood Bye!\n");
         #ifdef __unix__
              sleep(1);
         #elif defined(__WIN32__) || defined(__WIN64__)
             Sleep(1000);
         #endif
-        return;
     }
-    
-    return;
+
 }
 
 void playMenu() {
@@ -97,11 +94,10 @@ Press a number (0-4) to move through the menu:\n\
     } else if (option == 4) {
         
     } else {
-        //clearConsole();
+        clearConsole();
         mainMenu();
     }
     
-    return;
 }
 
 void scoreMenu() {
@@ -130,11 +126,10 @@ Press a number (0-2) to move through the menu:\n\
     } else if (option == 4) {
         
     } else {
-        //clearConsole();
+        clearConsole();
         mainMenu();
     }
-    
-    return;
+
 }
 
 void variantMenu() {
@@ -164,11 +159,10 @@ Press a number (0-3) to move through the menu:\n\
     } else if (option == 4) {
         
     } else {
-        //clearConsole();
+        clearConsole();
         mainMenu();
     }
-    
-    return;
+
 }
 
 int main() {
