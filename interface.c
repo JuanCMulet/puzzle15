@@ -74,8 +74,8 @@ void playMenu() {
 Press a number (0-4) to move through the menu:\n\
 1 - Normal Game (1 round, no bets, no timer)\n\
 2 - Betting Game (1 round, bet total moves, no timer)\n\
-3 - Betting Game Infinite (keep playing until you lose, bet total moves, no timer)\n\
-4 - Full Game (Betting Game Infinite with timer)\n\n\
+3 - Betting Game 10 (10 games, bet total moves, no timer)\n\
+4 - Full Game (Betting Game 10 with timer)\n\n\
 0 - Go Back\n\n";
 
     printf("%s", playInterface);

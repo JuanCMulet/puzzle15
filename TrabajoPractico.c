@@ -46,9 +46,6 @@ int viableGrid(int grid[], int size) {
         }
     }
     
-    printf("\n\n El total de inversiones es: %d", totalInversions);
-    printf("\n El espacio vacío se encuentra en la fila: %d", row);
-    
     /*  
         To know if a grid game is viable we add the total inversions and the row in wich the blank space is
         located. If the sum is an even number then its viable, otherwise its not. For a better explanation on how
@@ -56,6 +53,8 @@ int viableGrid(int grid[], int size) {
         https://www.youtube.com/watch?v=YI1WqYKHi78&ab_channel=Numberphile
         https://mathworld.wolfram.com/15Puzzle.html 
     */
+    printf("\n\n El total de inversiones es: %d", totalInversions);
+    printf("\n El espacio vacío se encuentra en la fila: %d", row);
     if ( (totalInversions+row)%2 == 0 ) {
         printf("\n El juego es posible de resolver");
         return 1;
@@ -80,10 +79,10 @@ void showGrid(int grid[], int size) {
             printf(" -------------------\n");
         }
     }
-    printf("\nW - UP | A - LEFT | S - DOWN | D - RIGHT\n\n");
+    printf("\nW - UP | A - LEFT | S - DOWN | D - RIGHT\nE - Exit game\n\n");
 }
 
-void swapSpace(int* grid, int size, int i, int j) {
+void swapSpace(int* grid, int size, int i, int j) { // Swaps the numbers in the grid
     int temp = grid[i];
     grid[i] = grid[j];
     grid[j] = temp;
@@ -105,13 +104,12 @@ void randomizeGrid(int* grid, int size) {
     
 }
 
-void moveSpace(int* grid, int size) {
+int moveSpace(int* grid, int size) {
+    int loc;
     char option;
     int check;
-    int loc;
-    int temp;
     
-    for (int i = 0; i < size ; i++) {
+    for (int i = 0; i < size ; i++) { // Looks for the empty square and asigns its location to loc
         if (grid[i] == 16) {
             loc = i;
         }
@@ -121,7 +119,7 @@ void moveSpace(int* grid, int size) {
         printf("Move to: ");
         scanf(" %c", &option);
         
-        switch (option) {
+        switch (option) { // Logic for keyboard movement.
             case 'W':
             case 'w':
                 if (loc == 0 || loc == 1 || loc == 2 || loc == 3) {
@@ -166,6 +164,10 @@ void moveSpace(int* grid, int size) {
                 }
                 break;
             
+            case 'E':
+            case 'e':
+                return 1;
+                
             default:
                 printf("\nInvalid input\n");
                 check = 0;
@@ -173,8 +175,7 @@ void moveSpace(int* grid, int size) {
         }
     } while (check < 1);
     
-    
-    
+    return 0;
 }
 
 int checkWin(const int grid[], const int gridWin[], int size) {
@@ -186,18 +187,82 @@ int checkWin(const int grid[], const int gridWin[], int size) {
     return 1; // Arrays are equal
 }
 
-void createGame(int* grid, int* winGrid, int size) {
+int betMode() {
+    int moves;
+    char* betText =
+"\nIn how many moves you think you'll win?\n\
+- 1000 points if in exactly M moves.\n\
+- 500 points if in the range of [M-10, M].\n\
+- 100 points if in the range of [M, M+10].\n\
+- 0 points otherwise\n\n";
+
+    printf("%s", betText);
     do {
-        randomizeGrid(grid, size);
-    } while (viableGrid(grid,size) != 1);
-    showGrid(grid, size);
+        printf("Pick a number between 40 and 200: ");
+        scanf("%d", &moves);
+    } while (moves < 40  || moves > 200);
     
-    do {
-        moveSpace(grid, size);
+    return moves;
+}
+
+int calcPoints(int moves, int bet) {
+    if (moves < bet && moves >= bet-10) {
+        return 500;
+    } else if (moves > bet && moves <= bet+10) {
+        return 100;
+    } else if (moves == bet) {
+        return 1000;
+    } else {
+        return 0;
+    }
+}
+
+int gamePlay(int* grid, int* winGrid, int size, int* moves) {
+    int ending; // 0 Normal state - 1 ended by quiting - 2 ended by wining
+    
+    do { // We ask the player to move the square...
         showGrid(grid, size);
-    } while (checkWin(grid, winGrid, size) < 1);
+        if (moveSpace(grid, size) == 2) {
+            ending = 2;
+            printf("No points for quitters!\n");
+        } else if (checkWin(grid, winGrid, size) == 1) {
+            ending = 1;
+            *moves += 1;
+            printf("\nYou won!\n");
+        } else {
+            *moves += 1; // We count the total moves made in the game;
+            ending = 0;
+        }
+    } while (ending < 1); //... until the game its solved or exit.
+
+    return ending;
+}
+
+void createGame(int* grid, int* winGrid, int size, int gameMode) {
+    int totalMoves = 0;
+    int movesBet = 0;
+    int score = 0;
+    int gameResult;
     
-    printf("You won!");
+    /*do { // We create random grid starts...
+        randomizeGrid(grid, size);
+    } while (viableGrid(grid,size) != 1); //...until its a playable one.*/
+    
+    if (gameMode == 1) {
+        gamePlay(grid, winGrid, size, &totalMoves);
+    } else if (gameMode == 2) {
+        movesBet = betMode();
+        gameResult = gamePlay(grid, winGrid, size, &totalMoves);
+        if (gameResult == 2) {
+            score = calcPoints(totalMoves, movesBet);
+            printf("Total moves: %d\n", totalMoves);
+            printf("Moves bet: %d\n", movesBet);
+            printf("\nYou Total Score is: %d", score);
+        } else {
+            printf("Next time for sure!\n");
+        }
+    }
+    
     
 }
 
@@ -205,7 +270,7 @@ int main() {
     int gameGrid[SIZE] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 15};
     int gameWin[SIZE] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
     
-    createGame(gameGrid, gameWin, SIZE);
+    createGame(gameGrid, gameWin, SIZE, 2);
     
 
     return 0;
