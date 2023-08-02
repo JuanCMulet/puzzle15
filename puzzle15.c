@@ -119,7 +119,7 @@ int viableGrid(int grid[], int size) {
         located. If the sum is an even number then its viable, otherwise its not. For a better explanation on how
         this works visit: 
         https://www.youtube.com/watch?v=YI1WqYKHi78&ab_channel=Numberphile
-        https://mathworld.wolfram.com/15Puzzle.html 
+        https://mathworld.wolfram.com/15Puzzle.html*/ 
     
     printf("\n\n El total de inversiones es: %d", totalInversions);
     printf("\n El espacio vacío se encuentra en la fila: %d", row);
@@ -130,7 +130,7 @@ int viableGrid(int grid[], int size) {
         printf("\n El juego NO es posible de resolver");
         return 0;
     }
-    */
+    
     
 }
 
@@ -158,7 +158,6 @@ void swapSpace(int* grid, int size, int i, int j) { // Swaps the numbers in the 
 }
 
 void randomizeGrid(int* grid, int size) {
-    
     //We generate a random seed for it to be fully random.
     srand(time(NULL));
     
@@ -327,6 +326,7 @@ void gameMode(int op1, int op2, int op3) {
     // op1 - Bet / op2 - 10rounds / op3 - timer
 
     int winGrid[SIZE] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+    int grid[SIZE] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
     int movesBet = 0;
     
     if (op2 == 1) {
@@ -356,10 +356,12 @@ void gameMode(int op1, int op2, int op3) {
         int minutes, seconds;
         
         do {
-            int grid[SIZE] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 15};
-            /*do { // We create random grid starts...
+            for (int i = 0; i < SIZE; i++) {
+                grid[i] = i+1;
+            }
+            do { // We create random grid starts...
                 randomizeGrid(grid, SIZE);
-            } while (viableGrid(grid,SIZE) != 1); //...until its a playable one.*/
+            } while (viableGrid(grid,SIZE) != 1); //...until its a playable one.
 
             movesBet = betMode(); //Store the moves bet for the current game.
 
@@ -407,10 +409,12 @@ void gameMode(int op1, int op2, int op3) {
             }
         } while (gameResult != -1 && totalGames <= 10); //We run this entire code until either 10 games have been played or the player quits.
     } else {
-        int grid[SIZE] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 15};
-            /*do { // We create random grid starts...
+        for (int i = 0; i < SIZE; i++) {
+                grid[i] = i+1;
+            }
+        do { // We create random grid starts...
                 randomizeGrid(grid, SIZE);
-            } while (viableGrid(grid,SIZE) != 1); //...until its a playable one.*/
+        } while (viableGrid(grid,SIZE) != 1); //...until its a playable one.
         if (op1 == 1) {
             //If Normal Bet mode was selected.
             movesBet = betMode();

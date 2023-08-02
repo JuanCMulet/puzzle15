@@ -370,9 +370,9 @@ void gameMode(int* grid, int* winGrid, int size, int op1, int op2, int op3) {
 }
 
 void createGame(int* grid, int* winGrid, int size, int mode) {
-    /*do { // We create random grid starts...
+    do { // We create random grid starts...
         randomizeGrid(grid, size);
-    } while (viableGrid(grid,size) != 1); //...until its a playable one.*/
+    } while (viableGrid(grid,size) != 1); //...until its a playable one.
     
     if (mode == 4) {
         gameMode(grid, winGrid, size, 1, 1, 1);
