@@ -4,3 +4,7 @@ https://mathworld.wolfram.com/15Puzzle.html
 
 Multiline examples for interface:
 https://jameshfisher.com/2016/11/30/c-multiline-literal/
+
+General consultations for bugfixing and function implementations:
+https://stackoverflow.com/
+https://www.geeksforgeeks.org/c-programming-language/
